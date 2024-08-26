@@ -6,36 +6,74 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  Pressable,
 } from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../navigation/appNavigator';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigation/appNavigator';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import CustomModal from '../components/modal';
+import { useState } from 'react';
+import BottomSheet from '../components/bottomSheet';
+import BannerSwiper from '../components/banner';
+import Animated, {
+  useSharedValue,
+} from 'react-native-reanimated';
 
-type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
-const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+type HomeScreenProps = BottomTabNavigationOptions;
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const data = [
-    {key: 'ButtonPage', title: 'Go to ButtonTest'},
-    {key: 'SwitchPage', title: 'Go to SwitchTest'},
-    {key: 'FlatListPage', title: 'Go to FlatListTest'},
-    {key: 'KeyboardAvoidingPage', title: 'Go to keyboardAvoidingTest'},
+    { key: 'ButtonPage', title: 'Go to ButtonTest' },
+    { key: 'Modal', title: 'Show Modal' },
+    { key: 'BottomSheet', title: 'Show BottomSheet' },
   ];
 
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+
+  const onPressButton = (key: string) => {
+    if (key === 'Modal') {
+      return setModalVisible(!modalVisible);
+    }
+    return
+  }
+
+  const isOpen = useSharedValue(false);
+
+  const toggleSheet = () => {
+    isOpen.value = !isOpen.value;
+  };
+
+  const contentStyle = {
+    color: '#001a72',
+    textDecorationColor: '#001a72',
+  };
+
   return (
-    <View style={styles.container}>
+
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={data}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-              navigation.navigate(item.key as keyof RootStackParamList)
-            }>
+            onPress={() => onPressButton(item.key)} >
             <Text style={styles.buttonText}>{item.title}</Text>
           </TouchableOpacity>
         )}
         keyExtractor={item => item.key}
       />
-    </View>
+      <BannerSwiper></BannerSwiper>
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        modalText="Hello World!"
+        buttonOpenText="Show Modal"
+        buttonCloseText="Hide Modal"
+      />
+    </SafeAreaView>
   );
 };
 
@@ -56,6 +94,40 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  buttonContainer: {
+    marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+  },
+  toggleButton: {
+    backgroundColor: '#b58df1',
+    padding: 12,
+    borderRadius: 48,
+  },
+  toggleButtonText: {
+    color: 'white',
+    padding: 8,
+  },
+  safeArea: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  bottomSheetButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingBottom: 2,
+  },
+  bottomSheetButtonText: {
+    fontWeight: 600,
+    textDecorationLine: 'underline',
+  },
 });
 
 export default HomeScreen;
+
+

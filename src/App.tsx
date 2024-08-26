@@ -1,15 +1,71 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useCallback, useRef, useState } from 'react';
+import { Button, Text, View, TextInput, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import React from 'react';
-import AppNavigator from './navigation/appNavigator';
+import HomeScreen from './screens/home';
+import LoginScreen from './screens/login';
+import DetailsScreen from './screens/detail';
 
-function App(): React.JSX.Element {
-  return <AppNavigator />;
+
+function SettingsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
 }
 
-export default App;
+const SettingsStack = createNativeStackNavigator();
+
+function SettingsStackScreen() {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen name="Details" component={DetailsScreen} />
+    </SettingsStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  // React.useEffect(() => {
+  //   setIsLoggedIn(false);
+  // }, []);
+
+
+  // if (!isLoggedIn) {
+  //   return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
+  // }
+  return (
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Stact" component={SettingsStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
+
+

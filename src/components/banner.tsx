@@ -7,8 +7,6 @@ import { RootStackParamList } from '../navigation/appNavigator';
 
 const { width } = Dimensions.get('window');
 
-type BannerSwiperNavigationProp = StackNavigationProp<RootStackParamList, 'BannerSwiper'>;
-
 
 const banners = [
     { id: '1', image: 'https://dimg.donga.com/wps/NEWS/IMAGE/2023/09/27/121408559.1.jpg', title: 'Banner 1', url: 'https://www.naver.com/' },
@@ -19,10 +17,9 @@ const banners = [
 const BannerSwiper = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const navigation = useNavigation<BannerSwiperNavigationProp>();
 
     const handlePress = (url: string) => {
-        navigation.navigate('WebViewScreen', { url });
+
     };
     return (
         <View style={styles.container}>
@@ -37,15 +34,13 @@ const BannerSwiper = () => {
                     <TouchableOpacity
                         key={banner.id}
                         style={styles.slide}
-                        onPress={() => handlePress(banner.url)}
+                        onPress={() => ''}
                     >
                         <Image
                             source={{ uri: banner.image }}
                             style={styles.image}
                         />
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>{banner.title}</Text>
-                        </View>
+
                     </TouchableOpacity>
                 ))}
             </Swiper>
@@ -56,6 +51,8 @@ const BannerSwiper = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 10,
+        borderRadius: 24,
     },
     title: {
         color: 'white',
@@ -71,12 +68,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     swiper: {
-        height: 200, // 슬라이더의 높이
+        height: 100, // 슬라이더의 높이
     },
     slide: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        height: 200
     },
     image: {
         width,

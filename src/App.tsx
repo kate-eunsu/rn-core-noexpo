@@ -7,6 +7,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
 import DetailsScreen from './screens/detail';
+import ScrollScreen from './screens/scroll';
+import SvgExample from './components/svg';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 function SettingsScreen({ navigation }) {
@@ -47,12 +50,18 @@ export default function App() {
   //   return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
   // }
   return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Stact" component={SettingsStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Tab.Navigator
+
+        >
+          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen name="Stact" component={SettingsStackScreen} />
+          <Tab.Screen name="Scroll" component={ScrollScreen} />
+          <Tab.Screen name="svg" component={SvgExample} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 

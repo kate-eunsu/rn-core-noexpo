@@ -31,11 +31,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
             <TouchableWithoutFeedback>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>{modalText}</Text>
-                <Pressable
+                {/* <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(false)}>
                   <Text style={styles.textStyle}>{buttonCloseText}</Text>
-                </Pressable>
+                </Pressable> */}
               </View>
             </TouchableWithoutFeedback>
           </View>

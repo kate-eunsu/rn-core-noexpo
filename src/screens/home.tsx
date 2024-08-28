@@ -1,25 +1,22 @@
 import * as React from 'react';
 import {
   View,
-  Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
   Text,
-  Pressable,
+  Dimensions,
+  Button,
 } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigation/appNavigator';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import CustomModal from '../components/modal';
-import { useState } from 'react';
-import BottomSheet from '../components/bottomSheet';
-import BannerSwiper from '../components/banner';
-import Animated, {
-  useSharedValue,
-} from 'react-native-reanimated';
+import { useRef, useState } from 'react';
 
+import BannerSwiper from '../components/banner';
+import Carousel from '../components/bannercarousel';
+import HomeSvg from '../assets/icons/home.svg'
+import BottomSheetComponent from '../components/bottomSheet';
 
 type HomeScreenProps = BottomTabNavigationOptions;
 
@@ -32,28 +29,59 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  // const handleButtonPress = () => {
+  //   setIsOpen(true);
+  //   bottomSheetRef.current?.snapToIndex(0);
+  // };
+
+  // const handleClose = () => {
+  //   setIsOpen(false);
+  //   bottomSheetRef.current?.close();
+  // };
+
+  const screenWidth = Math.round(Dimensions.get('window').width);
+  const PAGES = [
+    {
+      num: 1,
+      color: '#86E3CE',
+    },
+    {
+      num: 2,
+      color: '#D0E6A5',
+    },
+    {
+      num: 3,
+      color: '#FFDD94',
+    },
+    {
+      num: 4,
+      color: '#FA897B',
+    },
+    {
+      num: 5,
+      color: '#CCABD8',
+    },
+  ];
+
 
   const onPressButton = (key: string) => {
     if (key === 'Modal') {
       return setModalVisible(!modalVisible);
     }
+    if (key === 'BottomSheet') {
+      return setIsOpen(!isOpen);
+    }
+
     return
   }
-
-  const isOpen = useSharedValue(false);
-
-  const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
-  };
-
-  const contentStyle = {
-    color: '#001a72',
-    textDecorationColor: '#001a72',
-  };
 
   return (
 
     <SafeAreaView style={styles.container}>
+      <HomeSvg width={120} height={40} />
+
       <FlatList
         data={data}
         renderItem={({ item }) => (
@@ -66,14 +94,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         keyExtractor={item => item.key}
       />
       <BannerSwiper></BannerSwiper>
+      <Carousel
+        gap={16}
+        offset={36}
+        pages={PAGES}
+        pageWidth={screenWidth - (16 + 36) * 2}
+      />
       <CustomModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        modalText="Hello World!"
+        modalText="Hello testtest!"
         buttonOpenText="Show Modal"
         buttonCloseText="Hide Modal"
       />
+
+      <BottomSheetComponent bottomSheetVisible={isOpen} setBottomSheetVisible={setIsOpen} />
+
+
     </SafeAreaView>
+
   );
 };
 

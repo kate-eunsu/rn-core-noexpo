@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { RootStackParamList } from '../navigation/appNavigator';
 
 const { width } = Dimensions.get('window');
 
@@ -64,12 +63,9 @@ const styles = StyleSheet.create({
         bottom: 20,
         left: 20,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        padding: 10,
         borderRadius: 5,
     },
-    swiper: {
-        height: 100, // 슬라이더의 높이
-    },
+
     slide: {
         flex: 1,
         justifyContent: 'center',

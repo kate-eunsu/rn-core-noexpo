@@ -11,16 +11,26 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import CustomModal from '../components/modal';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import BannerSwiper from '../components/banner';
 import Carousel from '../components/bannercarousel';
 import HomeSvg from '../assets/icons/home.svg'
 import BottomSheetComponent from '../components/bottomSheet';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
 
-type HomeScreenProps = BottomTabNavigationOptions;
+type HomeScreenProps = StackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+interface Props {
+  navigation: HomeScreenProps;
+}
+
+
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const data = [
     { key: 'ButtonPage', title: 'Go to ButtonTest' },
     { key: 'Modal', title: 'Show Modal' },
@@ -73,12 +83,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     if (key === 'BottomSheet') {
       return setIsOpen(!isOpen);
     }
-
     return
   }
 
   return (
-
     <SafeAreaView style={styles.container}>
       <HomeSvg width={120} height={40} />
 

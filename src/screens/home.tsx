@@ -9,16 +9,15 @@ import {
   Button,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import CustomModal from '../components/modal';
 import { useState } from 'react';
 
 import BannerSwiper from '../components/banner';
 import Carousel from '../components/bannercarousel';
 import HomeSvg from '../assets/icons/home.svg'
-import BottomSheetComponent from '../components/bottomSheet';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
+import { useBottomSheet } from '../components/bottomSheet';
 
 type HomeScreenProps = StackNavigationProp<
   RootStackParamList,
@@ -40,16 +39,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const [isOpen, setIsOpen] = useState(false);
-
-  // const handleButtonPress = () => {
-  //   setIsOpen(true);
-  //   bottomSheetRef.current?.snapToIndex(0);
-  // };
-
-  // const handleClose = () => {
-  //   setIsOpen(false);
-  //   bottomSheetRef.current?.close();
-  // };
 
   const screenWidth = Math.round(Dimensions.get('window').width);
   const PAGES = [
@@ -75,23 +64,27 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     },
   ];
 
+  const { openBottomSheet, setContent } = useBottomSheet();
+
 
   const onPressButton = (key: string) => {
     if (key === 'Modal') {
       return setModalVisible(!modalVisible);
     }
     if (key === 'BottomSheet') {
-      return setIsOpen(!isOpen);
+      setContent(<Text>여기가 홈이지</Text>);
+      return openBottomSheet()
     }
     return
   }
 
+
   return (
     <SafeAreaView style={styles.container}>
-      <HomeSvg width={120} height={40} />
-
       <FlatList
+        style={{ backgroundColor: 'gray', width: '100%', paddingVertical: 10 }}
         data={data}
+        keyExtractor={item => item.key}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.button}
@@ -99,9 +92,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.buttonText}>{item.title}</Text>
           </TouchableOpacity>
         )}
-        keyExtractor={item => item.key}
       />
-      <BannerSwiper></BannerSwiper>
       <Carousel
         gap={16}
         offset={36}
@@ -116,19 +107,18 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         buttonCloseText="Hide Modal"
       />
 
-      <BottomSheetComponent bottomSheetVisible={isOpen} setBottomSheetVisible={setIsOpen} />
-
-
     </SafeAreaView>
-
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
+    gap: 10,
+    backgroundColor: 'white',
   },
   button: {
     margin: 10,
@@ -141,38 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  buttonContainer: {
-    marginTop: 16,
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-around',
-  },
-  toggleButton: {
-    backgroundColor: '#b58df1',
-    padding: 12,
-    borderRadius: 48,
-  },
-  toggleButtonText: {
-    color: 'white',
-    padding: 8,
-  },
-  safeArea: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  bottomSheetButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingBottom: 2,
-  },
-  bottomSheetButtonText: {
-    fontWeight: 600,
-    textDecorationLine: 'underline',
-  },
+
 });
 
 export default HomeScreen;

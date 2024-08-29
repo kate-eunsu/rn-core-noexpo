@@ -1,36 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { createContext, useContext, useRef, useMemo, useCallback, useState, useLayoutEffect } from 'react';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
 
-interface BottomSheetProps {
-    bottomSheetVisible: boolean;
-    setBottomSheetVisible: (visible: boolean) => void;
+const BottomSheetContext = createContext<any>(null);
+
+interface BottomSheetProviderProps {
+    children: React.ReactNode;
 }
 
-
-export default function BottomSheetComponent(
-    { bottomSheetVisible = false, setBottomSheetVisible }: BottomSheetProps
-) {
+export const BottomSheetProvider: React.FC<BottomSheetProviderProps> = ({ children }) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
+    const [snapPoints, setSnapPoints] = useState(['25%', '50%', '90%']);
+    const [content, setContent] = useState<React.ReactNode | null>(null);
+    const [contentHeight, setContentHeight] = useState(0);
 
-    const snapPoints = useMemo(() => ['17%', '50%', '90%'], []);
-
-    const handleSheetChanges = useCallback((index: number) => {
-        if (index === -1) {
-            console.log('handleSheetChanges', index);
-            setBottomSheetVisible(false);
-        }
+    const openBottomSheet = useCallback(() => {
+        bottomSheetRef.current?.snapToIndex(1);
     }, []);
 
-    useEffect(() => {
-        if (bottomSheetVisible) {
-            bottomSheetRef.current?.snapToIndex(1); // 오픈
-        } else {
-            console.log('useEffect', bottomSheetVisible);
-            bottomSheetRef.current?.close(); // 닫기
-        }
-    }, [bottomSheetVisible]);
-
+    const closeBottomSheet = useCallback(() => {
+        bottomSheetRef.current?.close();
+    }, []);
 
 
     const renderBackdrop = useCallback(
@@ -45,22 +35,43 @@ export default function BottomSheetComponent(
         []
     );
 
-    // renders
-    return (
-        <BottomSheet
-            ref={bottomSheetRef}
-            index={-1} // 처음에는 닫힌 상태
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-            backdropComponent={renderBackdrop}
-        >
-            <View style={{ padding: 20 }}>
-                <Text>This is the content inside the Bottom Sheet!</Text>
-                <TouchableOpacity onPress={() => setBottomSheetVisible(false)}>
-                    <Text>Close</Text>
-                </TouchableOpacity>
-            </View>
-        </BottomSheet>
 
+    const handleContentLayout = useCallback((event: LayoutChangeEvent) => {
+        const { height } = event.nativeEvent.layout;
+        setContentHeight(height);
+        if (height > 0) {
+            setSnapPoints([`${height}px`]);
+        }
+    }, []);
+
+    return (
+        <BottomSheetContext.Provider value={{ openBottomSheet, closeBottomSheet, setContent }}>
+            {children}
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={snapPoints}
+                enablePanDownToClose={true}
+                backdropComponent={renderBackdrop}
+                onChange={(index) => {
+                    if (index < 0) closeBottomSheet();
+                }}
+            >
+                <View style={{ padding: 20 }} >
+                    {content}
+                    <TouchableOpacity onPress={closeBottomSheet} style={{ padding: 16, alignContent: 'center' }}>
+                        <Text>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </BottomSheet>
+        </BottomSheetContext.Provider>
     );
+};
+
+export const useBottomSheet = () => {
+    const context = useContext(BottomSheetContext);
+    if (context === undefined) {
+        throw new Error('useBottomSheet must be used within a BottomSheetProvider');
+    }
+    return context;
 };

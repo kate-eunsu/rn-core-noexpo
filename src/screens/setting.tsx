@@ -3,6 +3,7 @@ import { Button, Text, View } from "react-native";
 import DetailsScreen from "./detail";
 import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useBottomSheet } from "../components/bottomSheet";
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -16,7 +17,16 @@ interface Props {
 }
 
 
+
 const SettingsScreen: React.FC<Props> = ({ navigation }) => {
+  const { openBottomSheet, setContent } = useBottomSheet();
+
+  const handleOpenBottomSheet = () => {
+    console.log('여기 세팅')
+    setContent(<Text>여기는 세팅이지</Text>);
+    openBottomSheet();
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings screen</Text>
@@ -24,6 +34,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
         title="Go to Details"
         onPress={() => navigation.navigate('Details')}
       />
+      <Button title="Open Bottom Sheet" onPress={handleOpenBottomSheet} />
     </View>
   );
 }

@@ -1,17 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { Button, Text, View, TextInput, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import HomeScreen from './screens/home';
-import ScrollScreen from './screens/scroll';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import StackScreen from './screens/stack';
-import SettingsStackScreen from './screens/setting';
-import HomeIcon from './assets/icons/home.svg';
-import PlannerIcon from './assets/icons/planner.svg';
 import BottomTabs from './components/bottomTabNavigator';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetProvider } from './components/bottomSheet';
+import { View } from 'react-native';
+import { Text } from 'react-native-svg';
 
 
 export type RootStackParamList = {
@@ -27,10 +22,9 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 
 
-
-
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // React.useEffect(() => {
   //   setIsLoggedIn(false);
@@ -43,13 +37,16 @@ export default function App() {
   return (
 
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <BottomTabs />
-      </NavigationContainer>
+      <BottomSheetModalProvider>
+        <BottomSheetProvider >
+          <NavigationContainer>
+            <BottomTabs />
+          </NavigationContainer>
+        </BottomSheetProvider>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
 
   );
 }
-
 
 

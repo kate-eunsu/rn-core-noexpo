@@ -51,7 +51,7 @@ export default function BottomTabs() {
           const tabIcon = tabIcons.find((icon) => icon.key === route.name) ?? tabIcons[0];
           const IconComponent = tabIcon?.icon;
 
-          return <View style={{ alignItems: 'center', width: 56, backgroundColor: 'black' }}>
+          return <View style={{ alignItems: 'center', width: 56 }}>
             <TabBarIcon icon={IconComponent} label={tabIcon.name} color={color} strokkeWidth={tabIcon.strokeWidth ?? 0} />
           </View>;
 
@@ -77,13 +77,11 @@ export default function BottomTabs() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 80,
+    height: 60,
     paddingHorizontal: 12,
-    paddingBottom: 5,
-    paddingTop: 10,
+    paddingBottom: 10,
+    paddingTop: 8,
     backgroundColor: '#fff',
-    borderTopWidth: 0.5,
-    borderTopColor: '#ccc',
   },
   container: {
     flex: 1,

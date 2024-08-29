@@ -64,13 +64,15 @@ export default function Carousel({ pages, pageWidth, gap, offset }: ICarousel) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 160,
+    height: 200,
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 16,
 
   },
   page: {
-    height: 160,
     borderRadius: 8,
   },
   indicatorWrapper: {

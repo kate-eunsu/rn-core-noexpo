@@ -1,0 +1,9 @@
+overwrite: true
+schema: "https://apiv2.dev.devd.co.kr/graphql"
+documents: "gql/**/*.gql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

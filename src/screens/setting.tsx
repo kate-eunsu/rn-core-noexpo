@@ -22,7 +22,6 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
   const { openBottomSheet, setContent } = useBottomSheet();
 
   const handleOpenBottomSheet = () => {
-    console.log('여기 세팅')
     setContent(<Text>여기는 세팅이지</Text>);
     openBottomSheet();
   }

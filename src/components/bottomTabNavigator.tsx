@@ -14,6 +14,7 @@ import SearchIcon from '../assets/icons/search.svg';
 import BenefitIcon from '../assets/icons/benefit.svg';
 import ProfileIcon from '../assets/icons/profile.svg';
 import DetailsScreen from '../screens/detail';
+import EventScreen from '../screens/stack';
 
 
 
@@ -54,11 +55,10 @@ export default function BottomTabs() {
           return <View style={{ alignItems: 'center', width: 56 }}>
             <TabBarIcon icon={IconComponent} label={tabIcon.name} color={color} strokkeWidth={tabIcon.strokeWidth ?? 0} />
           </View>;
-
         },
 
-        tabBarInactiveTintColor: 'gray',
-        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: '#A1A1A5',
+        tabBarActiveTintColor: '#000',
         headerTitleAlign: 'center',
         tabBarShowLabel: false,
         headerShown: false, // 헤더 제거
@@ -69,7 +69,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Stact" component={SettingsStackScreen} />
       <Tab.Screen name="Scroll" component={ScrollScreen} />
-      <Tab.Screen name="Stack" component={StackScreen} />
+      <Tab.Screen name="Stack" component={EventScreen} initialParams={{ id: 2 }} />
       <Tab.Screen name="Detail" component={DetailsScreen} />
     </Tab.Navigator>
   );

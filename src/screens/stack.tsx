@@ -1,58 +1,30 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./home";
-import { useState } from "react";
-import { Button, SafeAreaView, Text, View } from "react-native";
+import React from 'react';
+import { useQuery, gql } from '@apollo/client';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { RootStackParamList } from '../App';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GetEventDocument } from '../generated/graphql';
+
+type EventScreenProps = StackNavigationProp<
+  RootStackParamList,
+  'Event'
+>;
 
 
-// const Stack = createNativeStackNavigator();
+const EventScreen: React.FC<{ id: string }> = ({ id }) => {
+  const { loading, error, data } = useQuery(GetEventDocument, {
+    variables: { id },
+  });
 
-// return (
-// <Stack.Navigator>
-//   <Stack.Screen
-//     name="Home"
-//     component={HomeScreen}
-//     options={{
-//       title: 'My home',
-//       headerStyle: {
-//         backgroundColor: '#f4511e',
-//       },
-//       headerTintColor: '#fff',
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     }}
-//   />
-// </Stack.Navigator>
+  if (loading) return <ActivityIndicator />;
 
-
-interface MyButtonProps {
-  count: number;
-  onClick: () => void;
-}
-
-const MyButton: React.FC<MyButtonProps> = ({ count, onClick }) => {
   return (
-    <View>
-      <Button onPress={onClick} title={`Clicked ${count} times`} />
-    </View>
+    <SafeAreaView style={{ padding: 20 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'black' }}>{data.event.title}</Text>
+      <Text style={{ marginTop: 10, color: 'black' }}>{data.event.description}</Text>
+    </SafeAreaView>
   );
 };
 
-
-function StackScreen() {
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount(count + 1);
-  }
-
-  return (
-    <SafeAreaView>
-      <Text>Counters that update together</Text>
-      <MyButton count={count} onClick={handleClick} />
-      <MyButton count={count} onClick={handleClick} />
-    </SafeAreaView>
-  );
-}
-
-export default StackScreen
+export default EventScreen;

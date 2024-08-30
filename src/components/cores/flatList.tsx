@@ -7,8 +7,8 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-import {RootStackParamList} from '../../navigation/appNavigator';
-import {StackScreenProps} from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../App';
 
 type TestScreenProps = StackScreenProps<RootStackParamList, 'FlatListPage'>;
 const DATA = [
@@ -26,9 +26,9 @@ const DATA = [
   },
 ];
 
-type ItemProps = {title: string};
+type ItemProps = { title: string };
 
-const Item = ({title}: ItemProps) => (
+const Item = ({ title }: ItemProps) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
   </View>
@@ -38,7 +38,7 @@ const FlatListPage: React.FC<TestScreenProps> = () => (
   <SafeAreaView style={styles.container}>
     <FlatList
       data={DATA}
-      renderItem={({item}) => <Item title={item.title} />}
+      renderItem={({ item }) => <Item title={item.title} />}
       keyExtractor={item => item.id}
     />
   </SafeAreaView>

@@ -1,0 +1,7 @@
+query GetEvent($id: ID, $code: String) {
+  event(id: $id, code: $code) {
+    id
+    title
+    description
+  }
+}

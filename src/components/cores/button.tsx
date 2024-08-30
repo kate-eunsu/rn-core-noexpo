@@ -7,13 +7,14 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/appNavigator';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../App';
 
-type TestScreenProps = StackNavigationProp<RootStackParamList, 'ButtonPage'>;
+
+type ButtonPageProps = StackScreenProps<RootStackParamList, 'ButtonPage'>;
 const Separator = () => <View style={styles.separator} />;
 
-const ButtonPage: React.FC<TestScreenProps> = () => (
+const ButtonPage: React.FC<ButtonPageProps> = () => (
   <SafeAreaView style={styles.container}>
     <View>
       <Text style={styles.title}>

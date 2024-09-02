@@ -1,57 +1,99 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomTabs from './components/bottomTabNavigator';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { BottomSheetProvider } from './components/bottomSheet';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { NavigationContainer } from '@react-navigation/native';
+import MainNavigator from './navigation/mainNavigator';
+import AuthNavigator from './navigation/authNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, View } from 'react-native';
 
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: undefined;
+  Stact: undefined;
+  Scroll: undefined;
+  Detail: undefined;
   ButtonPage: undefined;
   SwitchPage: undefined;
   FlatListPage: undefined;
   Setting: undefined;
+  Login: undefined;
   Event: { id: string, code: string };
   KeyboardAvoidingPage: undefined;
+  MainNavigator: undefined;
+  AuthNavigator: undefined;
+  MainTabs: undefined;
+  Payment: undefined;
+  Complete: undefined;
 };
 
-const httpLink = new HttpLink({
-  uri: 'https://apiv2.dev.devd.co.kr/graphql',
-});
 
-const authLink = setContext((_, { headers }) => {
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4MiIsImlhdCI6MTcyNTAwMTUzMSwiZXhwIjoxNzMyNzc3NTMxLCJhdWQiOiJhcHB2MiJ9.x72h6IvrGDlcBX3vlzlDwJOse3DxdJDPQpplRjOmSpg"
-  return {
-    headers: {
-      ...headers,
-      authorization: `Bearer ${accessToken}`, // 여기서 토큰을 설정합니다.
-    }
-  };
-});
+const createApolloClient = (token: string | null) => {
+  const httpLink = new HttpLink({
+    uri: 'https://apiv2.dev.devd.co.kr/graphql',
+  });
 
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
 
+  return new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  });
+};
 
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // token 로딩 상태 관리
 
-  // React.useEffect(() => {
-  //   setIsLoggedIn(false);
-  // }, []);
+  const checkUserLoginStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      if (token !== null) {
+        setToken(token); // token이 있으면 상태에 저장
+      } else {
+        setToken(null); // token이 없으면 null로 설정
+      }
+    } catch (error) {
+      console.log('Error checking login status', error);
+    } finally {
+      setLoading(false); // 로딩 상태 해제
+    }
+  };
+
+  useEffect(() => {
+    checkUserLoginStatus();
+  }, []);
+
+  if (loading) {
+    <View>
+      <Text>Loading...</Text>
+    </View>
+    return null;
+  }
+
+  const handleLogin = (userToken: string) => {
+    console.log('로그인토큰')
+    setToken(userToken);
+  };
+
+  const handleLogout = () => {
+    setToken(null); // 로그아웃 시 token을 null로 설정
+  };
 
 
-  // if (!isLoggedIn) {
-  //   return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
-  // }
+  const client = createApolloClient(token);
+
   return (
 
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -59,12 +101,13 @@ export default function App() {
         <BottomSheetModalProvider>
           <BottomSheetProvider >
             <NavigationContainer>
-              <BottomTabs />
+              {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
             </NavigationContainer>
           </BottomSheetProvider>
         </BottomSheetModalProvider>
       </ApolloProvider>
     </GestureHandlerRootView>
+
 
   );
 }

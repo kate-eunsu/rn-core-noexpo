@@ -2,7 +2,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SvgProps } from 'react-native-svg';
 
-import HomeScreen from '../screens/home';
 import SettingsStackScreen from '../screens/setting';
 import ScrollScreen from '../screens/scroll';
 import StackScreen from '../screens/stack';
@@ -15,8 +14,15 @@ import BenefitIcon from '../assets/icons/benefit.svg';
 import ProfileIcon from '../assets/icons/profile.svg';
 import DetailsScreen from '../screens/detail';
 import EventScreen from '../screens/stack';
+import { RootStackParamList } from '../App';
+import { StackNavigationProp } from '@react-navigation/stack';
+import HomeScreen from '../screens/home';
+import { RouteProp } from '@react-navigation/native';
 
 
+type MainNavigatorProps = {
+  onLogout: () => void;
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +42,8 @@ function TabBarIcon({ icon: IconComponent, label, color, strokkeWidth }: TabBarI
   );
 }
 
-export default function BottomTabs() {
+
+const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
   const tabIcons = [
     { key: 'Home', name: "홈", icon: HomeIcon },
     { key: 'Stact', name: "이사플래너", icon: PlannerIcon },
@@ -66,10 +73,10 @@ export default function BottomTabs() {
 
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home">{(props) => <HomeScreen {...props} onLogout={onLogout} route={props.route as RouteProp<RootStackParamList, "Home">} />}</Tab.Screen>
       <Tab.Screen name="Stact" component={SettingsStackScreen} />
       <Tab.Screen name="Scroll" component={ScrollScreen} />
-      <Tab.Screen name="Stack" component={EventScreen} initialParams={{ id: 2 }} />
+      <Tab.Screen name="Event" component={EventScreen} initialParams={{ id: 2 }} />
       <Tab.Screen name="Detail" component={DetailsScreen} />
     </Tab.Navigator>
   );
@@ -93,3 +100,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+
+export default MainNavigator;

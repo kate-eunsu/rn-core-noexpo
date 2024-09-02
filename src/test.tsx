@@ -6,7 +6,7 @@ import {
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomTabs from './components/bottomTabNavigator';
+import MainTabNavigator from './navigation/mainNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
       <BottomSheetModalProvider>
 
         <NavigationContainer>
-          <BottomTabs />
+          <MainTabNavigator />
         </NavigationContainer>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

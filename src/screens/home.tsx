@@ -12,34 +12,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomModal from '../components/modal';
 import { useState } from 'react';
 
-import BannerSwiper from '../components/banner';
 import Carousel from '../components/bannercarousel';
-import HomeSvg from '../assets/icons/home.svg'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { useBottomSheet } from '../components/bottomSheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type HomeScreenProps = StackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'> & {
+  onLogout: () => void;
+};
 
-interface Props {
-  navigation: HomeScreenProps;
-}
+const HomeScreen = ({ navigation, onLogout }: HomeScreenProps) => {
 
-
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const data = [
     { key: 'ButtonPage', title: 'Go to ButtonTest' },
     { key: 'Modal', title: 'Show Modal' },
     { key: 'BottomSheet', title: 'Show BottomSheet' },
+    { key: 'logout', title: 'Logout' }
   ];
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const screenWidth = Math.round(Dimensions.get('window').width);
   const PAGES = [
     {
@@ -67,13 +61,20 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { openBottomSheet, setContent } = useBottomSheet();
 
 
-  const onPressButton = (key: string) => {
+  const onPressButton = async (key: string) => {
     if (key === 'Modal') {
       return setModalVisible(!modalVisible);
     }
     if (key === 'BottomSheet') {
       setContent(<Text>여기가 홈이지</Text>);
       return openBottomSheet()
+    }
+    if (key === 'logout') {
+      try {
+        onLogout();
+      } catch (error) {
+        console.log('Error removing user data', error);
+      }
     }
     return
   }

@@ -4,6 +4,8 @@ import DetailsScreen from "./detail";
 import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useBottomSheet } from "../components/bottomSheet";
+import PaymentScreen from "./payment";
+import PaymentStackScreen from "./payment";
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -16,8 +18,6 @@ interface Props {
   navigation: HomeScreenNavigationProp;
 }
 
-
-
 const SettingsScreen: React.FC<Props> = ({ navigation }) => {
   const { openBottomSheet, setContent } = useBottomSheet();
 
@@ -27,11 +27,15 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: '24' }}>
       <Text>Settings screen</Text>
       <Button
         title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        onPress={() => navigation.navigate('Detail')}
+      />
+      <Button
+        title="Go to Payment"
+        onPress={() => navigation.navigate('Payment')}
       />
       <Button title="Open Bottom Sheet" onPress={handleOpenBottomSheet} />
     </View>
@@ -41,8 +45,9 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
 function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Details" component={DetailsScreen} />
+      <SettingsStack.Screen name="Payment" component={PaymentStackScreen} options={{ headerShown: false }} />
     </SettingsStack.Navigator>
   );
 }

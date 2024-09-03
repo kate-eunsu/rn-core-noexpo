@@ -12,30 +12,35 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DetailsScreen = () => {
     const windowWidth = Dimensions.get('window').width;
-    const [imageHeight, setImageHeight] = useState(0);
+    const windowHeight = Dimensions.get('window').height;
 
-    console.log('windowWidth', windowWidth);
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView contentContainerStyle={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
                 <Image
                     source={require('../assets/images/zpp.webp')} // 이미지 경로 설정
-                    style={[styles.image, { width: windowWidth }]} // 이미지 높이를 2배로 설정하여 길게
-                    resizeMode="cover" // 이미지가 화면에 맞게 조정되도록 설정
+                    style={[
+                        styles.image,
+                        { height: windowHeight * 2 }, // 가로 길이에 맞춰 높이를 비율대로 설정
+                    ]}
+                    resizeMode="contain"
                 />
-
             </ScrollView>
         </SafeAreaView>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
+        flex: 1,
+    },
+    scrollView: {
+        flexGrow: 1, // 스크롤 뷰 컨텐츠를 화면 전체에 맞춤
+        justifyContent: 'center', // 이미지를 수직 가운데 정렬
+        backgroundColor: 'pink',
     },
     image: {
         width: '100%',
-        resizeMode: 'contain', // 가로에 맞추어 이미지 크기를 조정
+        alignSelf: 'center', // 이미지를 가로로 중앙 정렬
     },
 });
 

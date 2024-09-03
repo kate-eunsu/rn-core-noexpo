@@ -48,7 +48,7 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
     { key: 'Home', name: "홈", icon: HomeIcon },
     { key: 'Stact', name: "이사플래너", icon: PlannerIcon },
     { key: 'Scroll', name: "집탐색", icon: SearchIcon, strokeWidth: 3 },
-    { key: 'Stack', name: "혜택", icon: BenefitIcon },
+    { key: 'Event', name: "혜택", icon: BenefitIcon },
     { key: 'Detail', name: "나의 집업", icon: ProfileIcon },
   ];
 

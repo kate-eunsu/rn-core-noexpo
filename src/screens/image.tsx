@@ -44,7 +44,7 @@ const ImageScreen = () => {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </Text>
-        <View className='flex flex-col gap-4'>
+        <View style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
 
           <View style={styles.box}></View>
           <View style={styles.box}></View>

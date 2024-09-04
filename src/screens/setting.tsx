@@ -27,7 +27,7 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: '24' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 24 }}>
       <Text>Settings screen</Text>
       <Button
         title="Go to Details"

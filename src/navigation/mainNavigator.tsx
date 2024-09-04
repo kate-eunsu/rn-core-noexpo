@@ -15,9 +15,10 @@ import ProfileIcon from '../assets/icons/profile.svg';
 import DetailsScreen from '../screens/detail';
 import EventScreen from '../screens/stack';
 import { RootStackParamList } from '../App';
-import { StackNavigationProp } from '@react-navigation/stack';
 import HomeScreen from '../screens/home';
 import { RouteProp } from '@react-navigation/native';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 
 type MainNavigatorProps = {
@@ -42,8 +43,8 @@ function TabBarIcon({ icon: IconComponent, label, color, strokkeWidth }: TabBarI
   );
 }
 
-
 const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
+  const insets = useSafeAreaInsets();
   const tabIcons = [
     { key: 'Home', name: "홈", icon: HomeIcon },
     { key: 'Stact', name: "이사플래너", icon: PlannerIcon },
@@ -53,6 +54,7 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
   ];
 
   return (
+
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
@@ -69,7 +71,7 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
         headerTitleAlign: 'center',
         tabBarShowLabel: false,
         headerShown: false, // 헤더 제거
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [styles.tabBar, { height: 60 + insets.bottom }],
 
       })}
     >
@@ -79,25 +81,15 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
       <Tab.Screen name="Event" component={EventScreen} initialParams={{ id: 2 }} />
       <Tab.Screen name="Detail" component={DetailsScreen} />
     </Tab.Navigator>
+
+
   );
 }
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 60,
     paddingHorizontal: 12,
-    paddingBottom: 10,
-    paddingTop: 8,
-    backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'grey',
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
+    backgroundColor: 'white',
   },
 });
 

@@ -9,7 +9,11 @@ import MainNavigator from './navigation/mainNavigator';
 import AuthNavigator from './navigation/authNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, View } from 'react-native';
-
+import { Provider } from 'react-redux';
+import { persistor, store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { API_URL } from "@env"
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -27,13 +31,14 @@ export type RootStackParamList = {
   AuthNavigator: undefined;
   MainTabs: undefined;
   Payment: undefined;
+  PaymentDetail: undefined;
   Complete: undefined;
 };
 
 
 const createApolloClient = (token: string | null) => {
   const httpLink = new HttpLink({
-    uri: 'https://apiv2.dev.devd.co.kr/graphql',
+    uri: `${API_URL}/graphql`,
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -83,7 +88,6 @@ export default function App() {
   }
 
   const handleLogin = (userToken: string) => {
-    console.log('로그인토큰')
     setToken(userToken);
   };
 
@@ -91,25 +95,30 @@ export default function App() {
     setToken(null); // 로그아웃 시 token을 null로 설정
   };
 
-
   const client = createApolloClient(token);
 
   return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ApolloProvider client={client}>
 
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ApolloProvider client={client}>
-        <BottomSheetModalProvider>
-          <BottomSheetProvider >
-            <NavigationContainer>
-              {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
-            </NavigationContainer>
-          </BottomSheetProvider>
-        </BottomSheetModalProvider>
-      </ApolloProvider>
-    </GestureHandlerRootView>
+            <BottomSheetModalProvider>
+              <BottomSheetProvider >
+                <SafeAreaProvider>
+                  <NavigationContainer>
+                    {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
+                  </NavigationContainer>
+                </SafeAreaProvider>
+              </BottomSheetProvider>
+            </BottomSheetModalProvider>
+
+          </ApolloProvider>
+        </GestureHandlerRootView>
+      </PersistGate>
+    </Provider>
 
 
   );
 }
-
 

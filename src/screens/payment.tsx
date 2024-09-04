@@ -47,7 +47,7 @@ const PaymentStack = createNativeStackNavigator();
 const PaymentStackScreen = () => {
   return (
     <PaymentStack.Navigator>
-      <PaymentStack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: true, headerTitle: '결제', headerBackTitleVisible: false }} />
+      <PaymentStack.Screen name="PaymentDetail" component={PaymentScreen} options={{ headerShown: true, headerTitle: '결제', headerBackTitleVisible: false }} />
       <PaymentStack.Screen name="Complete" component={CompleteScreen} options={{ headerShown: true, headerTitle: '결제완료', headerBackTitleVisible: false }} />
     </PaymentStack.Navigator>
   );

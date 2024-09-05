@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GetEventDocument } from '../generated/graphql';
+import { RootStackParamList } from '../../global';
 
 type EventScreenProps = StackNavigationProp<
   RootStackParamList,

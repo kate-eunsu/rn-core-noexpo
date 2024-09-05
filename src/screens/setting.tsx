@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button, Text, View } from "react-native";
 import DetailsScreen from "./detail";
-import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useBottomSheet } from "../components/bottomSheet";
 import PaymentScreen from "./payment";
 import PaymentStackScreen from "./payment";
+import { RootStackParamList } from "../../global";
+import Webview from "./web";
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -37,6 +38,10 @@ const SettingsScreen: React.FC<Props> = ({ navigation }) => {
         title="Go to Payment"
         onPress={() => navigation.navigate('Payment')}
       />
+      <Button
+        title="Go to web"
+        onPress={() => navigation.navigate('Web')}
+      />
       <Button title="Open Bottom Sheet" onPress={handleOpenBottomSheet} />
     </View>
   );
@@ -48,6 +53,7 @@ function SettingsStackScreen() {
       <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Details" component={DetailsScreen} />
       <SettingsStack.Screen name="Payment" component={PaymentStackScreen} options={{ headerShown: false }} />
+      <SettingsStack.Screen name="Web" component={Webview} />
     </SettingsStack.Navigator>
   );
 }

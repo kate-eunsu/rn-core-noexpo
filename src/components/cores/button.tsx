@@ -8,7 +8,8 @@ import {
   Alert,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../../global';
+
 
 
 type ButtonPageProps = StackScreenProps<RootStackParamList, 'ButtonPage'>;

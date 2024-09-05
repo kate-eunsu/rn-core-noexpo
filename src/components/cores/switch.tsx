@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {StyleSheet, Switch, View, SafeAreaView} from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigation/appNavigator';
+import React, { useState } from 'react';
+import { StyleSheet, Switch, View, SafeAreaView } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../global';
 
 type TestScreenProps = StackScreenProps<RootStackParamList, 'SwitchPage'>;
 
@@ -12,7 +12,7 @@ const SwitchPage: React.FC<TestScreenProps> = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <Switch
-          trackColor={{false: '#767577', true: '#4A4BFF'}}
+          trackColor={{ false: '#767577', true: '#4A4BFF' }}
           thumbColor={isEnabled ? '#ffffff' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}

@@ -1,5 +1,4 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import tw from 'twrnc';
 
 interface DefaultPageProps {
   children: React.ReactNode,

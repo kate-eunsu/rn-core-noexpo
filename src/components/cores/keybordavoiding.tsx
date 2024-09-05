@@ -10,8 +10,8 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import {RootStackParamList} from '../../navigation/appNavigator';
-import {StackScreenProps} from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../global';
 
 type TestScreenProps = StackScreenProps<
   RootStackParamList,

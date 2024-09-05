@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import Carousel from '../components/bannercarousel';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../global';
 import { useBottomSheet } from '../components/bottomSheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';

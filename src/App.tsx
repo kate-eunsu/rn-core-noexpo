@@ -14,26 +14,8 @@ import { persistor, store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { API_URL } from "@env"
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-export type RootStackParamList = {
-  Home: undefined;
-  Stact: undefined;
-  Scroll: undefined;
-  Detail: undefined;
-  ButtonPage: undefined;
-  SwitchPage: undefined;
-  FlatListPage: undefined;
-  Setting: undefined;
-  Login: undefined;
-  Event: { id: string, code: string };
-  KeyboardAvoidingPage: undefined;
-  MainNavigator: undefined;
-  AuthNavigator: undefined;
-  MainTabs: undefined;
-  Payment: undefined;
-  PaymentDetail: undefined;
-  Complete: undefined;
-};
+import tw from 'twrnc'
+import { getStorage } from './storage/asyncStorage';
 
 
 const createApolloClient = (token: string | null) => {
@@ -56,6 +38,8 @@ const createApolloClient = (token: string | null) => {
   });
 };
 
+globalThis.tw = tw
+
 
 export default function App() {
   const [token, setToken] = useState<string | null>(null);
@@ -63,7 +47,8 @@ export default function App() {
 
   const checkUserLoginStatus = async () => {
     try {
-      const token = await AsyncStorage.getItem('userToken');
+      const token = await getStorage('userToken');
+      console.log('token', token)
       if (token !== null) {
         setToken(token); // token이 있으면 상태에 저장
       } else {

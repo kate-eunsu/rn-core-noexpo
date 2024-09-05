@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../../global';
 
 type TestScreenProps = StackScreenProps<RootStackParamList, 'FlatListPage'>;
 const DATA = [

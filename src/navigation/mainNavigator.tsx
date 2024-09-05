@@ -14,10 +14,11 @@ import BenefitIcon from '../assets/icons/benefit.svg';
 import ProfileIcon from '../assets/icons/profile.svg';
 import DetailsScreen from '../screens/detail';
 import EventScreen from '../screens/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../global';
 import HomeScreen from '../screens/home';
 import { RouteProp } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import TabBarIcon from '../components/TabBarIcon';
 
 
 
@@ -27,21 +28,6 @@ type MainNavigatorProps = {
 
 const Tab = createBottomTabNavigator();
 
-type TabBarIconProps = {
-  icon: React.FC<SvgProps>;
-  label: string;
-  color: string;
-  strokkeWidth?: number;
-};
-
-function TabBarIcon({ icon: IconComponent, label, color, strokkeWidth }: TabBarIconProps) {
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <IconComponent width={24} height={24} fill={color} stroke={color} strokeWidth={strokkeWidth ?? 0} />
-      <Text style={{ color, fontSize: 10, marginTop: 6 }}>{label}</Text>
-    </View>
-  );
-}
 
 const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
   const insets = useSafeAreaInsets();
@@ -54,7 +40,6 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
   ];
 
   return (
-
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
@@ -62,7 +47,7 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
           const IconComponent = tabIcon?.icon;
 
           return <View style={{ alignItems: 'center', width: 56 }}>
-            <TabBarIcon icon={IconComponent} label={tabIcon.name} color={color} strokkeWidth={tabIcon.strokeWidth ?? 0} />
+            <TabBarIcon icon={IconComponent} label={tabIcon.name} color={color} strokeWidth={tabIcon.strokeWidth ?? 0} />
           </View>;
         },
 
@@ -75,7 +60,9 @@ const MainNavigator: React.FC<MainNavigatorProps> = ({ onLogout }) => {
 
       })}
     >
-      <Tab.Screen name="Home">{(props) => <HomeScreen {...props} onLogout={onLogout} route={props.route as RouteProp<RootStackParamList, "Home">} />}</Tab.Screen>
+      <Tab.Screen name="Home">
+        {(props) => <HomeScreen {...props} onLogout={onLogout} route={props.route as RouteProp<RootStackParamList, "Home">} />}
+      </Tab.Screen>
       <Tab.Screen name="Stact" component={SettingsStackScreen} />
       <Tab.Screen name="Scroll" component={ScrollScreen} />
       <Tab.Screen name="Event" component={EventScreen} initialParams={{ id: 2 }} />

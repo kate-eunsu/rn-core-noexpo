@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/login';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../global';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 type AuthNavigatorProps = {

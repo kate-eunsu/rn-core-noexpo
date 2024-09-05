@@ -10,7 +10,7 @@ module.exports = {
         '5sm': '.5rem', // 8
         '4sm': '.625rem', // 10
         '3sm': '.675rem',
-        '2sm': '.75rem', // 12
+        xs: '.75rem', // 12
         sm: '.875rem',
         base: '1rem',
         lg: '1.125rem', // 18

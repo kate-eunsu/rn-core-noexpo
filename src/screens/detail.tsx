@@ -8,8 +8,8 @@ import {
     Image,
     Text
 } from 'react-native';
-import tw from 'twrnc';
 import Page from '../components/page/default';
+import MainHeader from '../components/header/main';
 
 
 const DetailsScreen = () => {
@@ -18,6 +18,8 @@ const DetailsScreen = () => {
 
     return (
         <Page>
+            <MainHeader title="이미지"></MainHeader>
+
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <Image
                     source={require('../assets/images/zpp.webp')} // 이미지 경로 설정

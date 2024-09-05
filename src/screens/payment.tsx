@@ -7,8 +7,9 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native';
-import { RootStackParamList } from '../App';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../global';
 
 type PaymentNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -39,7 +39,7 @@ const MyButton: React.FC<MyButtonProps> = ({ count, onClick }) => {
 };
 
 
-function StackScreen() {
+function StackScreen({ navigation }: { navigation: any }) {
   const [count, setCount] = useState(0);
 
   function handleClick() {
@@ -49,6 +49,10 @@ function StackScreen() {
   return (
     <SafeAreaView>
       <Text>Counters that update together</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Setting')}
+      />
       <MyButton count={count} onClick={handleClick} />
       <MyButton count={count} onClick={handleClick} />
     </SafeAreaView>

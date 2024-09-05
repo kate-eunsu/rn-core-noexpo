@@ -16,6 +16,8 @@ import { API_URL } from "@env"
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import tw from 'twrnc'
 import { getStorage } from './storage/asyncStorage';
+import NavigatorSCreen from './navigation/appNavigator';
+import TestNavigator from './navigation/testNavigator';
 
 
 const createApolloClient = (token: string | null) => {
@@ -88,7 +90,7 @@ export default function App() {
             <BottomSheetProvider >
               <SafeAreaProvider>
                 <NavigationContainer>
-                  {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
+                  {token ? <TestNavigator /> : <AuthNavigator onLogin={handleLogin} />}
                 </NavigationContainer>
               </SafeAreaProvider>
             </BottomSheetProvider>

@@ -10,13 +10,13 @@ import Webview from "./web";
 
 const SettingsStack = createNativeStackNavigator();
 
-type HomeScreenNavigationProp = StackNavigationProp<
+type SettingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Setting'
 >;
 
 interface Props {
-  navigation: HomeScreenNavigationProp;
+  navigation: SettingScreenNavigationProp;
 }
 
 const SettingsScreen: React.FC<Props> = ({ navigation }) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Button } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GetEventDocument } from '../generated/graphql';
@@ -21,6 +21,7 @@ const EventScreen: React.FC<{ id: string }> = ({ id }) => {
 
   return (
     <SafeAreaView style={{ padding: 20 }}>
+
       <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'black' }}>{data.event.title}</Text>
       <Text style={{ marginTop: 10, color: 'black' }}>{data.event.description}</Text>
     </SafeAreaView>

@@ -1,30 +1,35 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainTapNavigator from './mainNavigator';
-import PaymentStackScreen from '../screens/payment';
 
+import HomeScreen from "../screens/home";
+import StackScreen from "../screens/buttonTest";
+import ScrollScreen from '../screens/scroll';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EventScreen from "../screens/stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import SettingsStackScreen from "../screens/setting";
 
-type AppNavigatorProps = {
-  onLogout: () => void;
-};
+const HomeStack = createNativeStackNavigator();
 
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
-
-
+function HomeTabs() {
   return (
-    <Stack.Navigator>r
-      {/* Bottom Tab이 포함된 화면 */}
-      <Stack.Screen name="MainTabs" component={MainTapNavigator} options={{ headerShown: false }} />
-
-      {/* Bottom Tab이 없는 화면 */}
-      <Stack.Screen name="Payment" component={PaymentStackScreen} />
-      <Stack.Screen name="Setting" component={CompleteScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-    </Stack.Navigator>
+    <Tab.Navigator>
+      <Tab.Screen name="Stack" component={StackScreen} />
+      <Tab.Screen name="Scroll" component={ScrollScreen} />
+    </Tab.Navigator>
   );
 }
 
 
-export default AppNavigator;
+export default function NavigatorSCreen() {
+  return (
+
+    <Stack.Navigator >
+      <Stack.Screen name="Home" component={HomeTabs} />
+      <Stack.Screen name="Settings" component={SettingsStackScreen} />
+    </Stack.Navigator>
+
+  );
+}

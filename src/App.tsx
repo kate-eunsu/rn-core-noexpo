@@ -84,23 +84,21 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <ApolloProvider client={client}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ApolloProvider client={client}>
+          <BottomSheetModalProvider>
+            <BottomSheetProvider >
+              <SafeAreaProvider>
+                <NavigationContainer>
+                  {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
+                </NavigationContainer>
+              </SafeAreaProvider>
+            </BottomSheetProvider>
+          </BottomSheetModalProvider>
 
-            <BottomSheetModalProvider>
-              <BottomSheetProvider >
-                <SafeAreaProvider>
-                  <NavigationContainer>
-                    {token ? <MainNavigator onLogout={handleLogout} /> : <AuthNavigator onLogin={handleLogin} />}
-                  </NavigationContainer>
-                </SafeAreaProvider>
-              </BottomSheetProvider>
-            </BottomSheetModalProvider>
+        </ApolloProvider>
+      </GestureHandlerRootView>
 
-          </ApolloProvider>
-        </GestureHandlerRootView>
-      </PersistGate>
     </Provider>
 
 

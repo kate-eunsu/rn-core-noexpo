@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Image, StyleSheet, Dimensions, View, SafeAreaView } from 'react-native';
-import CountApp from '../components/CountApp';
+import CountApp from '../components/CountStorage';
 
 const FullScreenImageScreen = () => {
     const windowWidth = Dimensions.get('window').width;

@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 // const Stack = createStackNavigator();
 
 
-const screenA = () => {
+const ScreenA = () => {
   return (
     <SafeAreaView style={tw`flex-1 items-center justify-center`}>
       <Text>Screen A</Text>
@@ -18,7 +18,7 @@ const screenA = () => {
   )
 }
 
-const screenB = () => {
+const ScreenB = () => {
   return (
     <SafeAreaView style={tw`flex-1 items-center justify-center`}>
       <Text>Screen B</Text>
@@ -29,8 +29,8 @@ const screenB = () => {
 const TabNavi = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Screen A" component={screenA} />
-      <Tab.Screen name="Screen B" component={screenB} />
+      <Tab.Screen name="ScreenA" component={ScreenA} />
+      <Tab.Screen name="ScreenB" component={ScreenB} />
     </Tab.Navigator>
   )
 }

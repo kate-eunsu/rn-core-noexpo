@@ -45,24 +45,19 @@ export default function App() {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true); // token 로딩 상태 관리
 
-  const checkUserLoginStatus = async () => {
-    try {
-      const token = await getStorage('userToken');
-      console.log('token', token)
-      if (token !== null) {
-        setToken(token); // token이 있으면 상태에 저장
-      } else {
-        setToken(null); // token이 없으면 null로 설정
-      }
-    } catch (error) {
-      console.log('Error checking login status', error);
-    } finally {
-      setLoading(false); // 로딩 상태 해제
-    }
-  };
-
   useEffect(() => {
-    checkUserLoginStatus();
+    const checkToken = async () => {
+      try {
+        const savedToken = await AsyncStorage.getItem('token'); // 'token' 키로 토큰을 확인
+        setToken(savedToken); // 토큰이 있다면 상태에 저장
+      } catch (e) {
+        console.error('Failed to load token', e);
+      } finally {
+        setLoading(false); // 로딩 상태 종료
+      }
+    };
+
+    checkToken();
   }, []);
 
   if (loading) {
@@ -72,13 +67,16 @@ export default function App() {
     return null;
   }
 
-  const handleLogin = (userToken: string) => {
-    setToken(userToken);
+  const handleLogin = async (newToken: string) => {
+    await AsyncStorage.setItem('token', newToken);
+    setToken(newToken);
   };
 
-  const handleLogout = () => {
-    setToken(null); // 로그아웃 시 token을 null로 설정
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token'); // 토큰을 AsyncStorage에서 삭제
+    setToken(null); // 상태를 업데이트하여 로그인 화면으로 전환
   };
+
 
   const client = createApolloClient(token);
 

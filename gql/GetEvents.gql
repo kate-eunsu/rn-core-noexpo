@@ -1,0 +1,7 @@
+query GetEvents {
+  activeEvents {
+    id
+    title
+    description
+  }
+}

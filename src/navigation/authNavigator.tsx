@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../screens/login';
+import LoginScreen from '../__test__/login';
 import { RootStackParamList } from '../../global';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 

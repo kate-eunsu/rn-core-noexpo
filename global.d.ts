@@ -8,7 +8,7 @@ declare global {
 
 export type RootStackParamList = {
   Home: undefined;
-  Stact: undefined;
+  Stack: undefined;
   Scroll: undefined;
   Detail: undefined;
   ButtonPage: undefined;
@@ -16,7 +16,7 @@ export type RootStackParamList = {
   FlatListPage: undefined;
   Setting: undefined;
   Login: undefined;
-  Event: { id: string, code: string };
+  Event: { id: string };
   KeyboardAvoidingPage: undefined;
   MainNavigator: undefined;
   AuthNavigator: undefined;
@@ -25,4 +25,5 @@ export type RootStackParamList = {
   PaymentDetail: undefined;
   Complete: undefined;
   Web: undefined
+  TabNavigator: undefined
 };

@@ -526,6 +526,7 @@ export type Mutation = {
   acceptOrderToss: ZuOrder;
   /** @deprecated instead use order */
   acceptUserPurchase: ZuUserProductPurchase;
+  acceptZeroOrder: ZuOrder;
   aggregateLog: Scalars['String']['output'];
   aggregateReportResult: ZuJeonseSafetyReport;
   aggregateReportResultByUser: ZuJeonseSafetyReport;
@@ -641,6 +642,7 @@ export type Mutation = {
   refundUserPurchase: ZuUserProductPurchase;
   registerCouponToUser: ZuCoupon;
   registerCoupons: Scalars['Boolean']['output'];
+  rejectCardBenefit: ZuUserApplyCardBenefit;
   reportErrorSales: Scalars['Boolean']['output'];
   /** 사용자 요청할 수 있는 권한, disabled 된 쿠폰그룹은 보여지지 않음 */
   requestCoupon: ZuCoupon;
@@ -698,6 +700,7 @@ export type Mutation = {
   updateMonthlyPayTransfer: ZuMonthlyPayTransfer;
   updateNotice: Zu_Notices;
   updateOfficetel: Zu_Officetels;
+  updateOrderCoupon: ZuOrder;
   updatePopup: ZuPopup;
   updatePost: ZuPost;
   updateProduct: DdProduct;
@@ -756,6 +759,11 @@ export type MutationAcceptUserPurchaseArgs = {
   orderId: Scalars['String']['input'];
   paymentKey: Scalars['String']['input'];
   paymentType: Scalars['String']['input'];
+};
+
+
+export type MutationAcceptZeroOrderArgs = {
+  uuid: Scalars['String']['input'];
 };
 
 
@@ -852,7 +860,7 @@ export type MutationCompleteUserTaskArgs = {
 
 
 export type MutationConfirmCardBenefitArgs = {
-  id: Scalars['Float']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1313,7 +1321,7 @@ export type MutationManagerRefreshTokenArgs = {
 
 export type MutationMemoCardBenefitArgs = {
   content: Scalars['String']['input'];
-  id: Scalars['Float']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1346,6 +1354,11 @@ export type MutationRegisterCouponToUserArgs = {
 export type MutationRegisterCouponsArgs = {
   codes: Array<Scalars['String']['input']>;
   groupId: Scalars['ID']['input'];
+};
+
+
+export type MutationRejectCardBenefitArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1644,6 +1657,12 @@ export type MutationUpdateOfficetelArgs = {
   data: UpdateOfficetelInput;
   id: Scalars['ID']['input'];
   imageIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+
+export type MutationUpdateOrderCouponArgs = {
+  couponId: Scalars['ID']['input'];
+  uuid: Scalars['String']['input'];
 };
 
 
@@ -2047,6 +2066,12 @@ export type PaginatedTrait = {
   nodes?: Maybe<Array<Zu_Traits>>;
 };
 
+export type PaginatedUserApplyCard = {
+  __typename?: 'PaginatedUserApplyCard';
+  count: Scalars['Int']['output'];
+  nodes?: Maybe<Array<ZuUserApplyCardBenefit>>;
+};
+
 export type PaginatedUserPurchase = {
   __typename?: 'PaginatedUserPurchase';
   count: Scalars['Int']['output'];
@@ -2231,6 +2256,7 @@ export type Query = {
   traitPagination: PaginatedTrait;
   traitsScoreMentMap: TraitsScoreMentMap;
   user: Zu_Users;
+  userApplyCardBenefitPagination: PaginatedUserApplyCard;
   userByCode: Zu_Users;
   userClasses: Array<ZuClassUser>;
   userIdByExternalCodes: Array<Scalars['String']['output']>;
@@ -2855,6 +2881,12 @@ export type QueryUserArgs = {
 };
 
 
+export type QueryUserApplyCardBenefitPaginationArgs = {
+  page: Scalars['Int']['input'];
+  perPage: Scalars['Int']['input'];
+};
+
+
 export type QueryUserByCodeArgs = {
   code: Scalars['Int']['input'];
 };
@@ -3365,7 +3397,8 @@ export type UpdatedOfficetelInfo = {
 export enum UserOrderBy {
   CreatedAt = 'CreatedAt',
   Id = 'Id',
-  Name = 'Name'
+  Name = 'Name',
+  CardBenefitsGrantedAt = 'cardBenefitsGrantedAt'
 }
 
 export type ZdnPromotionCode = {
@@ -4287,7 +4320,8 @@ export enum ZuOrderStatus {
 export enum ZuOrderType {
   InApp = 'IN_APP',
   Payple = 'PAYPLE',
-  Toss = 'TOSS'
+  Toss = 'TOSS',
+  Zero = 'ZERO'
 }
 
 export type ZuPaymentLog = {
@@ -4653,7 +4687,9 @@ export type ZuUserApplyCardBenefit = {
   confirmedAt?: Maybe<Scalars['DateTime']['output']>;
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
+  manager?: Maybe<Dd_Manager>;
   memo?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<Zu_Users>;
   userId: Scalars['Int']['output'];
 };
 
@@ -5715,6 +5751,11 @@ export type GetEventQueryVariables = Exact<{
 
 export type GetEventQuery = { __typename?: 'Query', event: { __typename?: 'ZUEvent', id: string, title: string, description?: string | null } };
 
+export type GetEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetEventsQuery = { __typename?: 'Query', activeEvents: Array<{ __typename?: 'ZUEvent', id: string, title: string, description?: string | null }> };
+
 
 export const GetEventDocument = gql`
     query GetEvent($id: ID, $code: String) {
@@ -5759,3 +5800,44 @@ export type GetEventQueryHookResult = ReturnType<typeof useGetEventQuery>;
 export type GetEventLazyQueryHookResult = ReturnType<typeof useGetEventLazyQuery>;
 export type GetEventSuspenseQueryHookResult = ReturnType<typeof useGetEventSuspenseQuery>;
 export type GetEventQueryResult = Apollo.QueryResult<GetEventQuery, GetEventQueryVariables>;
+export const GetEventsDocument = gql`
+    query GetEvents {
+  activeEvents {
+    id
+    title
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetEventsQuery__
+ *
+ * To run a query within a React component, call `useGetEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+      }
+export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
+export function useGetEventsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
+export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
+export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
+export type GetEventsSuspenseQueryHookResult = ReturnType<typeof useGetEventsSuspenseQuery>;
+export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;

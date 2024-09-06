@@ -20,11 +20,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'> & {
-  onLogout: () => void;
-};
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const HomeScreen = ({ navigation, onLogout }: HomeScreenProps) => {
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const data = [
     { key: 'ButtonPage', title: 'Go to ButtonTest' },
@@ -69,12 +67,8 @@ const HomeScreen = ({ navigation, onLogout }: HomeScreenProps) => {
       setContent(<Text>여기가 홈이지</Text>);
       return openBottomSheet()
     }
-    if (key === 'logout') {
-      try {
-        onLogout();
-      } catch (error) {
-        console.log('Error removing user data', error);
-      }
+    if (key === 'ButtonPage') {
+      return navigation.navigate('Stack')
     }
     return
   }

@@ -9,10 +9,10 @@ import { RootStackParamList } from '../../global';
 type EventScreenProps = StackNavigationProp<
   RootStackParamList,
   'Event'
->;
+> & { id: string };
 
 
-const EventScreen: React.FC<{ id: string }> = ({ id }) => {
+const EventScreen: React.FC<EventScreenProps> = ({ id }) => {
   const { loading, error, data } = useQuery(GetEventDocument, {
     variables: { id },
   });

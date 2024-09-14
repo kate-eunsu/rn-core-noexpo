@@ -8,27 +8,26 @@ import {
   Dimensions,
   Button,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomModal from '../components/modal';
-import { useState } from 'react';
+import {useState} from 'react';
 
 import Carousel from '../components/bannercarousel';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../global';
-import { useBottomSheet } from '../components/bottomSheet';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../global';
+import {useBottomSheet} from '../components/bottomSheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const HomeScreen = ({ navigation }: HomeScreenProps) => {
-
+const HomeScreen = ({navigation}: HomeScreenProps) => {
   const data = [
-    { key: 'ButtonPage', title: 'Go to ButtonTest' },
-    { key: 'Modal', title: 'Show Modal' },
-    { key: 'BottomSheet', title: 'Show BottomSheet' },
-    { key: 'logout', title: 'Logout' }
+    {key: 'ButtonPage', title: 'Go to ButtonTest'},
+    {key: 'Modal', title: 'Show Modal'},
+    {key: 'BottomSheet', title: 'Show BottomSheet'},
+    {key: 'logout', title: 'Logout'},
   ];
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -56,8 +55,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     },
   ];
 
-  const { openBottomSheet, setContent } = useBottomSheet();
-
+  const {openBottomSheet, setContent} = useBottomSheet();
 
   const onPressButton = async (key: string) => {
     if (key === 'Modal') {
@@ -65,25 +63,24 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     }
     if (key === 'BottomSheet') {
       setContent(<Text>여기가 홈이지</Text>);
-      return openBottomSheet()
+      return openBottomSheet();
     }
     if (key === 'ButtonPage') {
-      return navigation.navigate('Stack')
+      return navigation.navigate('Stack');
     }
-    return
-  }
-
+    return;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        style={{ backgroundColor: 'gray', width: '100%', paddingVertical: 10 }}
+        style={{backgroundColor: 'gray', width: '100%', paddingVertical: 10}}
         data={data}
         keyExtractor={item => item.key}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity
             style={styles.button}
-            onPress={() => onPressButton(item.key)} >
+            onPress={() => onPressButton(item.key)}>
             <Text style={styles.buttonText}>{item.title}</Text>
           </TouchableOpacity>
         )}
@@ -101,7 +98,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         buttonOpenText="Show Modal"
         buttonCloseText="Hide Modal"
       />
-
     </SafeAreaView>
   );
 };
@@ -126,9 +122,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-
 });
 
-export default HomeScreen;
-
-
+// export default HomeScreen;

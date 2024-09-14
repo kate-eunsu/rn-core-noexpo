@@ -1,5 +1,5 @@
 // global.d.ts
-import { TwStyle } from 'twrnc';
+import {TwStyle} from 'twrnc';
 
 // 전역적으로 tw를 사용할 수 있도록 선언
 declare global {
@@ -16,14 +16,18 @@ export type RootStackParamList = {
   FlatListPage: undefined;
   Setting: undefined;
   Login: undefined;
-  Event: { id: string };
+  Event: {id: string};
   KeyboardAvoidingPage: undefined;
   MainNavigator: undefined;
   AuthNavigator: undefined;
+  i;
   MainTabs: undefined;
   Payment: undefined;
   PaymentDetail: undefined;
   Complete: undefined;
-  Web: undefined
-  TabNavigator: undefined
+  Web: undefined;
+  TabNavigator: undefined;
+  ScreenC: undefined;
+  ScreenA: undefined;
+  ScreenB: undefined;
 };

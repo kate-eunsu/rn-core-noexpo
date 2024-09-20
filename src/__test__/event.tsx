@@ -8,17 +8,19 @@ import {RootStackParamList} from '../../global';
 import BannerSwiper from '../components/banner';
 import Carousel from '../components/bannercarousel';
 import BannerTest from '../components/bannerTest';
+import ImageTest from './imageTest';
+import ImagePickerExample from './imageTest';
 
 type EventScreenProps = StackNavigationProp<RootStackParamList, 'Event'> & {
   id: string;
 };
 
 const EventScreen: React.FC<EventScreenProps> = ({id}) => {
-  const {loading, error, data} = useQuery(GetEventDocument, {
-    variables: {id},
-  });
+  // const {loading, error, data} = useQuery(GetEventDocument, {
+  //   variables: {id},
+  // });
 
-  if (loading) return <ActivityIndicator />;
+  // if (loading) return <ActivityIndicator />;
   const banners = [
     {
       id: '1',
@@ -43,17 +45,22 @@ const EventScreen: React.FC<EventScreenProps> = ({id}) => {
 
   return (
     <SafeAreaView style={{padding: 20}}>
-      <Text style={{fontSize: 24, fontWeight: 'bold', color: 'black'}}>
+      {/* <Text style={{fontSize: 24, fontWeight: 'bold', color: 'black'}}>
         {data.event.title}
       </Text>
       <Text style={{marginTop: 10, color: 'black'}}>
         {data.event.description}
-      </Text>
+      </Text> */}
 
       {/* <BannerSwiper></BannerSwiper> */}
-      <View style={tw`w-full h-full mt-6`}>
+      {/* <View style={tw`w-full h-full mt-6`}>
         <BannerTest banners={banners} />
       </View>
+      <View style={tw`bg-blue-200 py-8`}>
+        <ImageTest />
+      </View> */}
+
+      <ImagePickerExample />
     </SafeAreaView>
   );
 };

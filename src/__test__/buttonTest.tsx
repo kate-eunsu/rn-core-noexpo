@@ -1,8 +1,6 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./home";
-import { useState } from "react";
-import { Button, SafeAreaView, Text, View } from "react-native";
-
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useState} from 'react';
+import {Button, SafeAreaView, Text, View} from 'react-native';
 
 // const Stack = createNativeStackNavigator();
 
@@ -24,13 +22,12 @@ import { Button, SafeAreaView, Text, View } from "react-native";
 //   />
 // </Stack.Navigator>
 
-
 interface MyButtonProps {
   count: number;
   onClick: () => void;
 }
 
-const MyButton: React.FC<MyButtonProps> = ({ count, onClick }) => {
+const MyButton: React.FC<MyButtonProps> = ({count, onClick}) => {
   return (
     <View>
       <Button onPress={onClick} title={`Clicked ${count} times`} />
@@ -38,8 +35,7 @@ const MyButton: React.FC<MyButtonProps> = ({ count, onClick }) => {
   );
 };
 
-
-function StackScreen({ navigation }: { navigation: any }) {
+function StackScreen({navigation}: {navigation: any}) {
   const [count, setCount] = useState(0);
 
   function handleClick() {
@@ -59,4 +55,4 @@ function StackScreen({ navigation }: { navigation: any }) {
   );
 }
 
-export default StackScreen
+export default StackScreen;

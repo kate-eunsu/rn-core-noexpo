@@ -10,11 +10,10 @@ import {
 
 export const APP_PERMISSION_CODE = {
   camera: [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.IOS.CAMERA],
-  microphone: [PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.IOS.MICROPHONE],
   mediaLibaray: [
     PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
     PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-    PERMISSIONS.IOS.MEDIA_LIBRARY,
+    PERMISSIONS.IOS.PHOTO_LIBRARY,
   ],
 };
 
@@ -48,15 +47,14 @@ class PermissionUtil {
     // [STEP1] 전달 받은 배열을 순회하면서 권한을 허용했는지 체크합니다.
     for (let permsItem of permsCodeArr) {
       // [STEP2] 동일한 플랫폼(andriod, ios)의 코드가 아니면 undefined가 발생합니다. 이를 제외하고 수행합니다.
+      console.log('permsItem', permsItem);
       if (permsItem != undefined) {
         //[STEP3] react-native-permissions 함수를 이용해 권한을 체크합니다.
         let permsCheck = await check(permsItem);
         console.log('permsItem', permsItem, '/////', permsCheck);
         switch (permsCheck) {
-          // [CASE1] 권한 상태가 수락(granted) 상태인 경우
           case 'granted':
-            break;
-          // [CASE2] 권한 상태가 수락되지 않은 상태 : 배열을 저장합니다.
+            continue;
           case 'blocked':
           case 'denied':
           case 'limited':
@@ -97,6 +95,7 @@ class PermissionUtil {
       await requestMultiple(notGrantedArr)
         .then(statues => {
           let permsCnt = 0; // 허용되지 않은 권한의 종류
+          console.log('statues', statues);
           notGrantedArr.map(permsItem =>
             statues[permsItem] === RESULTS.GRANTED ? (permsCnt += 1) : 0,
           );
